@@ -22,32 +22,73 @@
 
         <TextView
             android:id="@+id/textviewUserEmail"
-            android:text=""
+            android:text="email 여기"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="300sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="297dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/sample"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="둘다 scroll view에서 선택한 거 따라 그 pc방에 접속하기"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="704dp" />
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <Button
+                android:id="@+id/showseat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자리조회"
+                tools:layout_editor_absoluteX="70dp"
+                tools:layout_editor_absoluteY="656dp" />
+
+            <Button
+                android:id="@+id/reservation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="예약"
+                tools:layout_editor_absoluteX="259dp"
+                tools:layout_editor_absoluteY="656dp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonLogout"
             android:text="로그아웃"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="회원탈퇴 합니다."
-            android:id="@+id/textviewDelete"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/purple_200"
-            android:layout_margin="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        // 식당추천 카테고리로 연결해주는 임시 버튼
-        <Button
-            android:id="@+id/btnRest"
-            android:text="식당 추천"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
