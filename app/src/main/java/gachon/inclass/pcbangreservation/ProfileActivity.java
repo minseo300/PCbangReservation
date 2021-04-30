@@ -31,6 +31,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     private Button buttonLogout;
     private TextView textivewDelete;
     private Button buttonRest;
+    private Button btnShow;
+    private Button btnReservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,6 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         textViewUserEmail = (TextView) findViewById(R.id.textviewUserEmail);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
-        buttonRest = (Button) findViewById(R.id.btnRest);
-
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
         //유저가 로그인 하지 않은 상태라면 null 상태이고 이 액티비티를 종료하고 로그인 액티비티를 연다.
@@ -61,6 +61,15 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         buttonLogout.setOnClickListener(this);
         textivewDelete.setOnClickListener(this);
         buttonRest.setOnClickListener(this);
+
+        btnShow = (Button)findViewById(R.id.showseat);
+        btnShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ShowSeat.class);
+                startActivity(intent);
+            }
+        });
 
 
 

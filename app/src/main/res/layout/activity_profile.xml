@@ -22,13 +22,22 @@
 
         <TextView
             android:id="@+id/textviewUserEmail"
-            android:text="email 여기"
+            android:text="emails here"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:text="gpsmap here / scroll view에 가까운 pc방 list보여주기"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="120dp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -41,34 +50,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text = "@string/sample"/>
-
-            </LinearLayout>
+                android:orientation="vertical" />
         </ScrollView>
-
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="둘다 scroll view에서 선택한 거 따라 그 pc방에 접속하기"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="704dp" />
-
-
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            >
+            android:layout_gravity="center">
             <Button
                 android:id="@+id/showseat"
                 android:layout_width="wrap_content"
@@ -84,7 +73,19 @@
                 android:text="예약"
                 tools:layout_editor_absoluteX="259dp"
                 tools:layout_editor_absoluteY="656dp" />
+
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="둘다 scroll view에서 선택한 거 따라 그 pc방에 접속하기"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="704dp" />
+
 
         <Button
             android:id="@+id/buttonLogout"
@@ -92,5 +93,15 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="회원탈퇴 합니다."
+            android:id="@+id/textviewDelete"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/purple_200"
+            android:layout_margin="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </RelativeLayout>
