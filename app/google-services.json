@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "964880467776",
+    "project_id": "pcbangreservation-64f0e",
+    "storage_bucket": "pcbangreservation-64f0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964880467776:android:754857df4524ce09855ca5",
+        "android_client_info": {
+          "package_name": "gachon.inclass.pcbangreservation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964880467776-b2qlaf5ki1263p4sjdcogt7f8hpnt74o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2hBKW6bsBlp56Se4pHZZrlGK92xNCNyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964880467776-b2qlaf5ki1263p4sjdcogt7f8hpnt74o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
