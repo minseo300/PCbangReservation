@@ -20,6 +20,12 @@
         android:text="선택된 pc방 name 보여주기"
         />
 
+    <ListView
+        android:id="@+id/listview1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="multipleChoice" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,4 +44,6 @@
             android:text="예약"
             />
     </LinearLayout>
+
+
 </LinearLayout>

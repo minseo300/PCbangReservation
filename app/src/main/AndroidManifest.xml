@@ -12,6 +12,8 @@
         <activity android:name=".FindpwActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".Reservation"/>
+        <activity android:name=".ShowSeat"/>
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"

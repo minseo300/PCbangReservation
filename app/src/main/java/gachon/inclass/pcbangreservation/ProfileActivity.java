@@ -30,7 +30,6 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     private TextView textViewUserEmail;
     private Button buttonLogout;
     private TextView textivewDelete;
-    private Button buttonRest;
     private Button btnShow;
     private Button btnReservation;
 
@@ -43,6 +42,9 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         textViewUserEmail = (TextView) findViewById(R.id.textviewUserEmail);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
+        btnShow = (Button)findViewById(R.id.showseat);
+        btnReservation = (Button)findViewById(R.id.reservation);
+
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
         //유저가 로그인 하지 않은 상태라면 null 상태이고 이 액티비티를 종료하고 로그인 액티비티를 연다.
@@ -60,18 +62,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         //logout button event
         buttonLogout.setOnClickListener(this);
         textivewDelete.setOnClickListener(this);
-        buttonRest.setOnClickListener(this);
-
-        btnShow = (Button)findViewById(R.id.showseat);
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ShowSeat.class);
-                startActivity(intent);
-            }
-        });
-
-
+        btnReservation.setOnClickListener(this);
+        btnShow.setOnClickListener(this);
 
 //        // 식당 추천 임시 버튼
 //        buttonRest = (Button) findViewById(R.id.btnRest);
@@ -93,6 +85,14 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
 
     public void onClick(View view) {
+        if(view == btnReservation){
+            finish();
+            startActivity(new Intent(this,Reservation.class));
+        }
+        if(view == btnShow){
+            finish();
+            startActivity(new Intent(this,ShowSeat.class));
+        }
         if (view == buttonLogout) {
             firebaseAuth.signOut();
             finish();
