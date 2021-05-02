@@ -19,13 +19,13 @@ public class Reservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
 
-        // 코드 계속 ...
+
 
         ListView listview ;
         CustomChoiceListViewAdapter adapter;
 
         // Adapter 생성
-        adapter = new CustomChoiceListViewAdapter() ;
+        adapter = new CustomChoiceListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.listview1);

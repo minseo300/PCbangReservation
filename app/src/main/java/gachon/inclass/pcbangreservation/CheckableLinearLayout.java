@@ -7,6 +7,8 @@ import android.widget.Checkable;
 import android.widget.LinearLayout;
 
 public class CheckableLinearLayout  extends LinearLayout implements Checkable {
+
+
     public CheckableLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
