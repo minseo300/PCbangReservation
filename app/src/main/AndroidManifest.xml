@@ -9,11 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PCbangReservation">
-        <activity android:name=".FindpwActivity"></activity>
+        <activity android:name=".OwnerLoginActivity"></activity>
+        <activity android:name=".OwnerSignUpActivity" />
+        <activity android:name=".CustomerOrOwnerActivity" />
+        <activity android:name=".FindpwActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".Reservation"/>
-        <activity android:name=".ShowSeat"/>
+        <activity android:name=".Reservation" />
+        <activity android:name=".ShowSeat" />
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"

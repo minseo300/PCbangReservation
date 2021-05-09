@@ -27,11 +27,13 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
+public class OwnerSignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText editTextEmail;
     EditText editTextPassword;
     EditText etConfirmPW;
+    EditText editTextPCbangName;
+    EditText editTextNumber_of_seats;
     Button buttonSignup;
     TextView textviewSingin;
     TextView textviewMessage;
@@ -39,10 +41,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     //define firebase object
     FirebaseAuth firebaseAuth;
 
+    String name;
+    int seats=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_owner_sign_up);
 
         //initializig firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -58,6 +62,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         editTextPassword = (EditText) findViewById(R.id.signup_password);
         etConfirmPW=(EditText)findViewById(R.id.confirmPW);
         textviewSingin= (TextView) findViewById(R.id.textViewSignin);
+        editTextPCbangName=(EditText)findViewById(R.id.pcbang_name);
+
+        editTextNumber_of_seats=(EditText)findViewById(R.id.number_of_seats);
+
         //textviewMessage = (TextView) findViewById(R.id.textviewMessage);
         buttonSignup = (Button) findViewById(R.id.signup_bt);
         progressDialog = new ProgressDialog(this);
@@ -72,6 +80,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         //사용자가 입력하는 email, password를 가져온다.
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        seats=Integer.parseInt(editTextNumber_of_seats.getText().toString()); //좌석 수
+        name=editTextPCbangName.getText().toString();//피씨방 이름
         //email과 password가 비었는지 아닌지를 체크 한다.
         if(TextUtils.isEmpty(email)){
             Toast.makeText(this, "Email을 입력해 주세요.", Toast.LENGTH_SHORT).show();
@@ -83,12 +93,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
         if(!password.equals(etConfirmPW.getText().toString()))
         {
-            Toast.makeText(SignupActivity.this,"비밀번호 불일치",Toast.LENGTH_SHORT).show();
+            Toast.makeText(OwnerSignUpActivity.this,"비밀번호 불일치",Toast.LENGTH_SHORT).show();
             return;
         }
         if(password.length()<6)
         {
-            Toast.makeText(SignupActivity.this,"비밀번호 최소 6자리 이상",Toast.LENGTH_SHORT).show();
+            Toast.makeText(OwnerSignUpActivity.this,"비밀번호 최소 6자리 이상",Toast.LENGTH_SHORT).show();
             return;
         }
 //        email과 password가 제대로 입력되어 있다면 계속 진행된다.
@@ -96,30 +106,37 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         progressDialog.show();
 
         //가입 요청 ---이메일!
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(OwnerSignUpActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     FirebaseUser user=firebaseAuth.getCurrentUser();
 
-                    user.sendEmailVerification().addOnCompleteListener(SignupActivity.this, new OnCompleteListener<Void>() {
+                    user.sendEmailVerification().addOnCompleteListener(OwnerSignUpActivity.this, new OnCompleteListener<Void>() {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 String email = user.getEmail();
                                 String uid = user.getUid();
                                 HashMap<Object,String> hashMap = new HashMap<>();
 //
-                                hashMap.put("nickname",uid);
                                 hashMap.put("email",email);
+                                hashMap.put("uid",uid);
+                                hashMap.put("name",name);
+                                hashMap.put("seats",String.valueOf(seats));
+                                for(int i=1;i<=seats;i++)
+                                {
+                                    hashMap.put(String.valueOf(i),"none");
+                                }
+
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference reference = database.getReference("Users");
+                                DatabaseReference reference = database.getReference("PC bangs");
 
                                 reference.child(uid).setValue(hashMap);
-                                Toast.makeText(SignupActivity.this,"이메일 인증 후 로그인 하세요",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                Toast.makeText(OwnerSignUpActivity.this,"이메일 인증 후 로그인 하세요",Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), OwnerLoginActivity.class));
                             }
                             else{
-                                Toast.makeText(SignupActivity.this,"Authentication failed.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OwnerSignUpActivity.this,"Authentication failed.",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -127,7 +144,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     //에러발생
                     //textviewMessage.setText("에러유형\n - 이미 등록된 이메일  \n -암호 최소 6자리 이상 \n - 서버에러");
-                    Toast.makeText(SignupActivity.this, "이메일 안보내지는 듯--등록 에러!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OwnerSignUpActivity.this, "이메일 안보내지는 듯--등록 에러!", Toast.LENGTH_SHORT).show();
                 }
                 progressDialog.dismiss();
             }
@@ -144,7 +161,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         if(view == textviewSingin) {
 
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, OwnerLoginActivity.class));
         }
     }
 }

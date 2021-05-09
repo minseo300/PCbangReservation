@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#BFFFEFB7"
+    android:background="#BF000000"
     android:orientation="vertical"
     tools:ignore="Deprecated">
 
@@ -27,7 +27,7 @@
             android:layout_marginBottom="50dp"
             android:text="Sign Up"
             android:textSize="40sp"
-            android:textColor="#000000"/>
+            android:textColor="#E4E4E4"/>
 
 
 
@@ -63,7 +63,24 @@
             android:layout_marginTop="10dp"
             android:hint="Check Password"
             android:inputType="textPassword"/>
-
+        <EditText
+            android:id="@+id/pcbang_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:hint="가게 이름을 입력하세요." />
+        <EditText
+            android:id="@+id/number_of_seats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:hint="좌석 수를 입력하세요."/>
         <Button
             android:id="@+id/signup_bt"
             android:layout_gravity="center_horizontal"
