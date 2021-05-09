@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +63,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
                     if (pos != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(ctx, ShowSeat.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("PCbangName", txt_name.getText().toString());
+
                         ctx.startActivity(intent);
                     }
                 }
