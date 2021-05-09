@@ -123,15 +123,17 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
                                 hashMap.put("uid",uid);
                                 hashMap.put("name",name);
                                 hashMap.put("seats",String.valueOf(seats));
-                                for(int i=1;i<=seats;i++)
-                                {
-                                    hashMap.put(String.valueOf(i),"none");
-                                }
+
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("PC bangs");
+                                DatabaseReference ref =reference.child(name);
 
-                                reference.child(uid).setValue(hashMap);
+                                ref.setValue(hashMap);
+                                for(int i=1;i<=seats;i++) {
+                                    ref.child("seat").child(String.valueOf(i)).setValue(0);
+                                }
+
                                 Toast.makeText(OwnerSignUpActivity.this,"이메일 인증 후 로그인 하세요",Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), OwnerLoginActivity.class));
                             }

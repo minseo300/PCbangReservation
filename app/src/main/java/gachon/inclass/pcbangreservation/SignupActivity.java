@@ -113,8 +113,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                 hashMap.put("email",email);
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("Users");
+                                String[] emailID = email.split("\\.");
+                                String DBEmail = emailID[0]+"_"+emailID[1];
+                                DatabaseReference ref =reference.child(DBEmail);
+                                ref.setValue(hashMap);
 
-                                reference.child(uid).setValue(hashMap);
+
                                 Toast.makeText(SignupActivity.this,"이메일 인증 후 로그인 하세요",Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             }
