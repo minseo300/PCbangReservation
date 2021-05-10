@@ -7,14 +7,28 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class ShowSeat  extends AppCompatActivity {
 
     Button btnGoBack;
     TextView nameText;
+    PCbangListAdapter adapter;
+    ArrayList<String> seatsNumber;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +40,45 @@ public class ShowSeat  extends AppCompatActivity {
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
 
         nameText.setText(name);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("PC bangs").child(name).child("seat");
+        seatsNumber = new ArrayList<>();
+
+
+        RecyclerView rcView = findViewById(R.id.SeatrcView);
+        rcView.setLayoutManager(new LinearLayoutManager(this));
+
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        seatsNumber.add("Hello");
+        adapter = new PCbangListAdapter(getApplicationContext(),seatsNumber);
+        rcView.setAdapter(adapter);
+
 
         btnGoBack = (Button)findViewById(R.id.goBack);
         btnGoBack.setOnClickListener(new View.OnClickListener() {

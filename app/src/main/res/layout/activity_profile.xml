@@ -78,6 +78,23 @@
             android:layout_margin="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="충전하기"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/payment"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/account"
+            android:text = "카드 등록하기"/>
+    </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
