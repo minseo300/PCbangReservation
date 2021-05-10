@@ -17,6 +17,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".Reservation" />
         <activity android:name=".ShowSeat" />
+        <activity android:name=".PaymentActivity"/>
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"

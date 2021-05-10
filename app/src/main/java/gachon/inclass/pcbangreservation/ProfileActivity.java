@@ -143,6 +143,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         if(view == pay){
             startActivity(new Intent(this,PaymentActivity.class));
         }
+
         if (view == buttonLogout) {
             firebaseAuth.signOut();
             finish();
