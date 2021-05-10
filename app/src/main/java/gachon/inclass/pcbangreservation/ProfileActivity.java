@@ -39,14 +39,15 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     //firebase auth object
     private FirebaseAuth firebaseAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference PCBang = database.getReference("PC bangs");
+    DatabaseReference ref;
     //view objects
     private TextView textViewUserEmail;
     private Button buttonLogout;
     private TextView textivewDelete;
     PCbangListAdapter adapter;
     ArrayList<String> pcbangNames;
-
+    Button pay;
+    Button account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         textViewUserEmail = (TextView) findViewById(R.id.textviewUserEmail);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
-
+        pay = (Button)findViewById(R.id.payment);
+        account = (Button)findViewById(R.id.account);
 
 
         //initializing firebase authentication object
@@ -76,8 +78,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
         pcbangNames = new ArrayList<>();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("PC bangs");
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("PC bangs");
 
         RecyclerView rcView = findViewById(R.id.pcbangrcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
@@ -130,12 +132,17 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         //logout button event
         buttonLogout.setOnClickListener(this);
         textivewDelete.setOnClickListener(this);
+        pay.setOnClickListener(this);
+        account.setOnClickListener(this);
 
     }
 
 
     public void onClick(View view) {
 
+        if(view == pay){
+            startActivity(new Intent(this,PaymentActivity.class));
+        }
         if (view == buttonLogout) {
             firebaseAuth.signOut();
             finish();

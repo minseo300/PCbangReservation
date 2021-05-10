@@ -42,7 +42,7 @@ public class ShowSeat  extends AppCompatActivity {
         nameText.setText(name);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("PC bangs").child(name).child("seat");
+        DatabaseReference ref = database.getReference("PC bangs").child(name);
         seatsNumber = new ArrayList<>();
 
 

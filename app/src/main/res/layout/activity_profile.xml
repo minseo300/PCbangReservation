@@ -32,7 +32,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="350sp"
+            android:layout_height="100sp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
             app:layout_constraintStart_toStartOf="parent"

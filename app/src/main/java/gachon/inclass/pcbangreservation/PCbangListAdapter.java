@@ -61,7 +61,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(ctx, ShowSeat.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(ctx,ShowSeat.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("PCbangName", txt_name.getText().toString());
 
                         ctx.startActivity(intent);
