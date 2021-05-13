@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         finish();
-        startActivity(new Intent(this,CustomerOrOwnerActivity.class));
+
+        startActivity(new Intent(this,MapActivity.class));
+        //startActivity(new Intent(this,CustomerOrOwnerActivity.class));
     }
 }

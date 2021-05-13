@@ -2,6 +2,8 @@ package gachon.inclass.pcbangreservation;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,16 +21,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class OwnerSignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
+    EditText editTextAddress;
     EditText editTextEmail;
     EditText editTextPassword;
     EditText etConfirmPW;
@@ -43,6 +49,9 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
 
     String name;
     int seats=0;
+    String address;
+    String latitude; //위도
+    String longitude;//경도
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +72,7 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
         etConfirmPW=(EditText)findViewById(R.id.confirmPW);
         textviewSingin= (TextView) findViewById(R.id.textViewSignin);
         editTextPCbangName=(EditText)findViewById(R.id.pcbang_name);
-
+        editTextAddress=(EditText)findViewById(R.id.address);
         editTextNumber_of_seats=(EditText)findViewById(R.id.number_of_seats);
 
         //textviewMessage = (TextView) findViewById(R.id.textviewMessage);
@@ -78,11 +87,12 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
 //    //Firebse creating a new user 회원가입
     private void registerUser(){
         //사용자가 입력하는 email, password를 가져온다.
+        final Geocoder geocoder=new Geocoder(this);
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         seats=Integer.parseInt(editTextNumber_of_seats.getText().toString()); //좌석 수
         name=editTextPCbangName.getText().toString();//피씨방 이름
-        //email과 password가 비었는지 아닌지를 체크 한다.
+        address=editTextAddress.getText().toString(); // 피씨방 주소        //email과 password가 비었는지 아닌지를 체크 한다.
         if(TextUtils.isEmpty(email)){
             Toast.makeText(this, "Email을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
@@ -123,8 +133,25 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
                                 hashMap.put("uid",uid);
                                 hashMap.put("name",name);
                                 hashMap.put("seats",String.valueOf(seats));
+                                hashMap.put("address",address);
 
+                                List<Address> list=null;
+                                try{
+                                    list=geocoder.getFromLocationName(address,10); //지역이름, 읽을 개수
+                                } catch (IOException e)
+                                {
+                                    e.printStackTrace();
+                                    Log.e("test","입출력 오류- 서버에서 주소 변환시 에러 발생");
+                                }
+                                for(Address t:list){
+                                    latitude=String.valueOf(t.getLatitude());
+                                    longitude=String.valueOf(t.getLongitude());
+                                }
 
+                                System.out.println(latitude);
+                                System.out.println(longitude);
+                                hashMap.put("latitude",latitude);
+                                hashMap.put("longitude",longitude);
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("PC bangs");
                                 DatabaseReference ref =reference.child(name);

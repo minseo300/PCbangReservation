@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -90,6 +91,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if(snapshot.hasChild("name")){
                     String names =snapshot.child("name").getValue().toString();
+                    Log.v("names",names);
                     pcbangNames.add(names);
                 }
                 adapter.notifyDataSetChanged();
@@ -141,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     public void onClick(View view) {
 
         if(view == pay){
-            startActivity(new Intent(this,PaymentActivity.class));
+            startActivity(new Intent(getApplicationContext(), PaymentActivity.class));
         }
 
         if (view == buttonLogout) {

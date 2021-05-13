@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="gachon.inclass.pcbangreservation">
+
+    <uses-permission android:name="wonpa.alwaysweb.com.myloctest.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 네트워크로만 위치 측정 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -9,7 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PCbangReservation">
-        <activity android:name=".OwnerLoginActivity"></activity>
+        <activity android:name=".MapActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAP3n6_Xl8J5Khn37JDX5XY9AaDWogTXNU" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".OwnerLoginActivity" />
         <activity android:name=".OwnerSignUpActivity" />
         <activity android:name=".CustomerOrOwnerActivity" />
         <activity android:name=".FindpwActivity" />
@@ -17,7 +35,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".Reservation" />
         <activity android:name=".ShowSeat" />
-        <activity android:name=".PaymentActivity"/>
+        <activity android:name=".PaymentActivity" />
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
