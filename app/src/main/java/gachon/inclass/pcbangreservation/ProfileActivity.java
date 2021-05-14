@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +24,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,11 +36,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.lang.Object;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ProfileActivity extends AppCompatActivity  implements View.OnClickListener{
+public class ProfileActivity extends AppCompatActivity  implements View.OnClickListener {
 
     private static final String TAG = "ProfileActivity";
 
@@ -50,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     Button pay;
     Button account;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +71,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
         pay = (Button)findViewById(R.id.payment);
         account = (Button)findViewById(R.id.account);
+
+
 
 
         //initializing firebase authentication object
@@ -77,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         //textViewUserEmail의 내용을 변경해 준다.
         textViewUserEmail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
 
-        pcbangNames = new ArrayList<>();
+        pcbangNames = new ArrayList<String>();
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("PC bangs");
@@ -126,7 +138,6 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             }
         });
 
-        pcbangNames.add("Hello");
         adapter = new PCbangListAdapter(getApplicationContext(),pcbangNames);
         rcView.setAdapter(adapter);
 
@@ -186,4 +197,6 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 //            startActivity(restIntent);
 //        }
     }
+
+
 }
