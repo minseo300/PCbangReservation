@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class ShowSeat  extends AppCompatActivity {
 
     Button btnGoBack;
-    TextView nameText;
+    TextView nameText,totalSeat;
     PCbangListAdapter adapter;
     ArrayList<String> seatsNumber;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -44,12 +44,8 @@ public class ShowSeat  extends AppCompatActivity {
         String name = intent.getStringExtra("PCbangName");
 
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
-
+        totalSeat = (TextView)findViewById(R.id.totalSeat);
         nameText.setText(name);
-
-        int i = 1;
-
-        String s;
 
         ref = database.getReference("PC bangs").child(name).child("seats");
         seatsNumber = new ArrayList<>();
@@ -58,8 +54,24 @@ public class ShowSeat  extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 Toast.makeText(getApplicationContext(),task.getResult().getValue().toString(),Toast.LENGTH_SHORT).show();
+                String s = task.getResult().getValue().toString();
+                totalSeat.setText(s);
             }
         });
+
+        String s = totalSeat.getText().toString();
+        int total = Integer.parseInt(s);
+
+        for(int i =1; i < total + 1; i++){
+            ref = database.getReference("PC bangs").child(name).child("seat").child(Integer.toString(i));
+            ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    String s = task.getResult().getValue().toString();
+                    Log.v("names",s);
+                }
+            });
+        }
 
         RecyclerView rcView = findViewById(R.id.SeatrcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));

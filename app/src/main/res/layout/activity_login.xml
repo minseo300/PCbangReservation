@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="40sp"
         android:text="PCbang Reservation"
         android:textColor="#222B11"
         android:textSize="40sp" />
@@ -28,10 +28,10 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="238dp"
+        android:layout_height="238sp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginTop="25sp"
+        android:layout_marginBottom="35sp"
         app:srcCompat="@drawable/computer" />
 
     <EditText
@@ -39,8 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
         android:hint="Enter E-mail"
         android:inputType="textEmailAddress" />
 
@@ -49,8 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
         android:hint="Enter Password"
         android:inputType="textPassword" />
 
@@ -59,10 +59,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginBottom="20sp"
         android:text="Login"
         app:backgroundTint="#654040" />
 
@@ -84,7 +84,7 @@
           android:id="@+id/find_pw"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
+          android:layout_marginLeft="16sp"
           android:text="Forgot your PW?"
           android:textColor="#FF9800"
           android:textSize="20sp" />

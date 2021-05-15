@@ -14,7 +14,13 @@
         android:layout_gravity="center"
         android:textSize = "40sp"
         />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id = "@+id/totalSeat"
+        android:layout_gravity="center"
+        android:textSize = "0sp"
+        />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="400sp"
