@@ -84,8 +84,11 @@ public class ShowSeat  extends AppCompatActivity {
                 if(snapshot.hasChild("time")&&snapshot.hasChild("number")){
                     String number =snapshot.child("number").getValue().toString();
                     String time = snapshot.child("time").getValue().toString();
-                    Log.v("names",number + ": " + time);
-                    seatsNumber.add(number + " : " + time);
+                    if(time.equals("0")) {
+                        seatsNumber.set(Integer.parseInt(number) - 1, "Seat number " + number + " is available");
+                    }
+                    else
+                        seatsNumber.set(Integer.parseInt(number) - 1, "Seat number " + number + " is not available");
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -95,8 +98,11 @@ public class ShowSeat  extends AppCompatActivity {
                 if(snapshot.hasChild("time")&&snapshot.hasChild("number")){
                     String number =snapshot.child("number").getValue().toString();
                     String time = snapshot.child("time").getValue().toString();
-                    Log.v("names",number + ": " + time);
-                    seatsNumber.add(number + " : " + time);
+                    if(time.equals("0")) {
+                        seatsNumber.set(Integer.parseInt(number) - 1, "Seat number " + number + " is available");
+                    }
+                    else
+                        seatsNumber.set(Integer.parseInt(number) - 1, "Seat number " + number + " is not available");
                 }
                 adapter.notifyDataSetChanged();
             }
