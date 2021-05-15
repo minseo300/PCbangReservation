@@ -2,6 +2,7 @@ package gachon.inclass.pcbangreservation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,9 +21,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class ShowSeat  extends AppCompatActivity {
@@ -46,18 +47,22 @@ public class ShowSeat  extends AppCompatActivity {
 
         nameText.setText(name);
 
-
-        ref = database.getReference("PC bangs").child(name);
-        seatsNumber = new ArrayList<>();
         int i = 1;
-        int total=0;
 
+        String s;
 
+        ref = database.getReference("PC bangs").child(name).child("seats");
+        seatsNumber = new ArrayList<>();
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Toast.makeText(getApplicationContext(),task.getResult().getValue().toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         RecyclerView rcView = findViewById(R.id.SeatrcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
-
-
 
         adapter = new PCbangListAdapter(getApplicationContext(),seatsNumber);
         rcView.setAdapter(adapter);
