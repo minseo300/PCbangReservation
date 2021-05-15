@@ -3,6 +3,7 @@ package gachon.inclass.pcbangreservation;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class PaymentActivity extends AppCompatActivity {
+public class PaymentActivity extends Activity {
     Button okB,cancelB;
     EditText charged;
     private FirebaseAuth firebaseAuth;
@@ -48,11 +49,32 @@ public class PaymentActivity extends AppCompatActivity {
                 String money = charged.getText().toString();
                 ref.child(DBEmail).child("payment").setValue(money);
                 Toast.makeText(getApplicationContext(),money+" 원이 충전되었습니다!",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
         cancelB = findViewById(R.id.payCancel);
-
+        cancelB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_OUTSIDE)
+            return false;
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        return;
+    }
+
 }
