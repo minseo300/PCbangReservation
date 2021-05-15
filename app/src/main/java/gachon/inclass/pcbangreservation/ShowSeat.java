@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
-
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class ShowSeat  extends AppCompatActivity {
@@ -47,6 +49,9 @@ public class ShowSeat  extends AppCompatActivity {
 
         ref = database.getReference("PC bangs").child(name);
         seatsNumber = new ArrayList<>();
+        int i = 1;
+        int total=0;
+
 
 
         RecyclerView rcView = findViewById(R.id.SeatrcView);

@@ -33,7 +33,7 @@
         <activity android:name=".FindpwActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".Reservation" />
+        <activity android:name=".Reservation" android:theme = "@android:style/Theme.Dialog"/>
         <activity android:name=".ShowSeat" />
         <activity android:name=".PaymentActivity" android:theme = "@android:style/Theme.Dialog"/>
         <activity

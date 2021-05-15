@@ -12,10 +12,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Reservation extends Activity {
 //예약 시간은 종료시간 넣어두고, 끝나는 시간이 되면 다시 0으로 바꿔서 저장
     Button cancelB;
     Button reservationB;
+    private FirebaseAuth firebaseAuth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,7 @@ public class Reservation extends Activity {
 
         setContentView(R.layout.activity_reservation);
 
+        reservationB = (Button)findViewById(R.id.reservationB);
 
 
 
