@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_gravity="center"
     android:background="#ffe6b3">
 
 
@@ -21,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="선택한 자리로 예약하시겠습니까?"
         android:layout_gravity="center"
-        android:textSize = "25sp"
+        android:textSize = "20sp"
         />
 
 
@@ -37,10 +38,12 @@
             android:id="@+id/reservationB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="3sp"
             android:text="예약"
             />
 
         <Button
+            android:layout_margin="3sp"
             android:id="@+id/cancelB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

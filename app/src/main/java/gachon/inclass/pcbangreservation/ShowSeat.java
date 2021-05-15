@@ -29,6 +29,9 @@ public class ShowSeat  extends AppCompatActivity {
     TextView nameText;
     PCbangListAdapter adapter;
     ArrayList<String> seatsNumber;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    DatabaseReference ref;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +44,8 @@ public class ShowSeat  extends AppCompatActivity {
 
         nameText.setText(name);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("PC bangs").child(name);
+
+        ref = database.getReference("PC bangs").child(name);
         seatsNumber = new ArrayList<>();
 
 
@@ -50,7 +53,7 @@ public class ShowSeat  extends AppCompatActivity {
         rcView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        seatsNumber.add("Hello");
+
         adapter = new PCbangListAdapter(getApplicationContext(),seatsNumber);
         rcView.setAdapter(adapter);
 
