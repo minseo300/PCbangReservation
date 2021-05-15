@@ -24,7 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ShowSeat  extends AppCompatActivity {
 
@@ -46,6 +49,11 @@ public class ShowSeat  extends AppCompatActivity {
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
         nameText.setText(name);
 
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String strNow = sdfNow.format(date);
+
         seatsNumber = new ArrayList<>();
         ref = database.getReference("PC bangs").child(name).child("seat");
 
@@ -60,7 +68,12 @@ public class ShowSeat  extends AppCompatActivity {
                         seatsNumber.add("Seat number " +number + " is available");
                     }
                     else{
-                        seatsNumber.add("Seat number " +number + " is not available");
+                        if(time.compareTo(strNow) < 0) {
+                            ref.child(number).child("time").setValue("0");
+                            seatsNumber.add("Seat number " +number + " is available");
+                        }
+                        else
+                            seatsNumber.add("Seat number " +number + " is not available");
                     }
                 }
                 adapter.notifyDataSetChanged();
