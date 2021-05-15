@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class ShowSeat  extends AppCompatActivity {
 
     Button btnGoBack;
-    TextView nameText,totalSeat;
+    TextView nameText,totalseat;
     PCbangListAdapter adapter;
     ArrayList<String> seatsNumber;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -44,34 +44,56 @@ public class ShowSeat  extends AppCompatActivity {
         String name = intent.getStringExtra("PCbangName");
 
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
-        totalSeat = (TextView)findViewById(R.id.totalSeat);
+        totalseat = (TextView)findViewById(R.id.totalSeat);
         nameText.setText(name);
 
-        ref = database.getReference("PC bangs").child(name).child("seats");
         seatsNumber = new ArrayList<>();
+        ref = database.getReference("PC bangs").child(name).child("seat");
 
-        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        ref.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                Toast.makeText(getApplicationContext(),task.getResult().getValue().toString(),Toast.LENGTH_SHORT).show();
-                String s = task.getResult().getValue().toString();
-                totalSeat.setText(s);
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.hasChild("time")&&snapshot.hasChild("number")){
+                    String number =snapshot.child("number").getValue().toString();
+                    String time = snapshot.child("time").getValue().toString();
+                    Log.v("names",number + ": " + time);
+                    seatsNumber.add(number + " : " + time);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.hasChild("time")&&snapshot.hasChild("number")){
+                    String number =snapshot.child("number").getValue().toString();
+                    String time = snapshot.child("time").getValue().toString();
+                    Log.v("names",number + ": " + time);
+                    seatsNumber.add(number + " : " + time);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild("time")&&snapshot.hasChild("number")){
+                    String number =snapshot.child("number").getValue().toString();
+                    String time = snapshot.child("time").getValue().toString();
+                    Log.v("names",number + ": " + time);
+                    seatsNumber.add(number + " : " + time);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                adapter.notifyDataSetChanged();
             }
         });
-
-        String s = totalSeat.getText().toString();
-        int total = Integer.parseInt(s);
-
-        for(int i =1; i < total + 1; i++){
-            ref = database.getReference("PC bangs").child(name).child("seat").child(Integer.toString(i));
-            ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    String s = task.getResult().getValue().toString();
-                    Log.v("names",s);
-                }
-            });
-        }
 
         RecyclerView rcView = findViewById(R.id.SeatrcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));

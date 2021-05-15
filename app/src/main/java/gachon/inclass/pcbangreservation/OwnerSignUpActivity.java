@@ -158,7 +158,8 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
 
                                 ref.setValue(hashMap);
                                 for(int i=1;i<=seats;i++) {
-                                    ref.child("seat").child(String.valueOf(i)).setValue(0);
+                                    ref.child("seat").child(String.valueOf(i)).child("number").setValue(String.valueOf(i));
+                                    ref.child("seat").child(String.valueOf(i)).child("time").setValue("0");
                                 }
 
                                 Toast.makeText(OwnerSignUpActivity.this,"이메일 인증 후 로그인 하세요",Toast.LENGTH_SHORT).show();
