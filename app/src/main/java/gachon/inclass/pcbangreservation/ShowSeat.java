@@ -29,8 +29,8 @@ import java.util.ArrayList;
 public class ShowSeat  extends AppCompatActivity {
 
     Button btnGoBack;
-    TextView nameText,totalseat;
-    PCbangListAdapter adapter;
+    TextView nameText;
+    SeatlistAdapter adapter;
     ArrayList<String> seatsNumber;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -44,7 +44,6 @@ public class ShowSeat  extends AppCompatActivity {
         String name = intent.getStringExtra("PCbangName");
 
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
-        totalseat = (TextView)findViewById(R.id.totalSeat);
         nameText.setText(name);
 
         seatsNumber = new ArrayList<>();
@@ -56,8 +55,13 @@ public class ShowSeat  extends AppCompatActivity {
                 if(snapshot.hasChild("time")&&snapshot.hasChild("number")){
                     String number =snapshot.child("number").getValue().toString();
                     String time = snapshot.child("time").getValue().toString();
-                    Log.v("names",number + ": " + time);
-                    seatsNumber.add(number + " : " + time);
+                    if(time.equals("0")) {
+                        Log.v("names", "Seat number " +number + " is available");
+                        seatsNumber.add("Seat number " +number + " is available");
+                    }
+                    else{
+                        seatsNumber.add("Seat number " +number + " is not available");
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -98,7 +102,7 @@ public class ShowSeat  extends AppCompatActivity {
         RecyclerView rcView = findViewById(R.id.SeatrcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new PCbangListAdapter(getApplicationContext(),seatsNumber);
+        adapter = new SeatlistAdapter(getApplicationContext(),seatsNumber,name);
         rcView.setAdapter(adapter);
 
 
