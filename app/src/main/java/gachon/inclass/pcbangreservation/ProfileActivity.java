@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     ArrayList<String> pcbangNames;
     Button pay;
     Button account;
-
+    Button checkAccount,reservedSeat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
         pay = (Button)findViewById(R.id.payment);
         account = (Button)findViewById(R.id.account);
-
+        checkAccount = (Button)findViewById(R.id.payed);
+        reservedSeat = (Button)findViewById(R.id.btnreserved);
 
 
 
@@ -111,19 +112,13 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot.hasChild("name")){
-                    String names = snapshot.child("name").getValue().toString();
-                    pcbangNames.add(names);
-                }
+
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("name")){
-                    String names =snapshot.child("name").getValue().toString();
-                    pcbangNames.add(names);
-                }
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -147,14 +142,27 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         textivewDelete.setOnClickListener(this);
         pay.setOnClickListener(this);
         account.setOnClickListener(this);
+        checkAccount.setOnClickListener(this);
+        reservedSeat.setOnClickListener(this);
 
     }
 
 
     public void onClick(View view) {
 
+        if(view == reservedSeat){
+            startActivity(new Intent(getApplicationContext(),ShowReservedSeat.class));
+            finish();
+        }
+
+        if(view == checkAccount){
+            startActivity(new Intent(getApplicationContext(),ShowPayment.class));
+            finish();
+        }
+
         if(view == pay){
             startActivity(new Intent(getApplicationContext(), PaymentActivity.class));
+            finish();
         }
 
         if (view == buttonLogout) {
