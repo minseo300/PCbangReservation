@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,8 @@ public class Reservation extends Activity {
     private FirebaseAuth firebaseAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref;
+    DatabaseReference myref;
+    DatabaseReference feeref;
     TextView chosen;
 
     @Override
@@ -46,16 +49,20 @@ public class Reservation extends Activity {
         String pcbangName = intent.getStringExtra("name");
 
         chosen = (TextView)findViewById(R.id.chosenSeat);
-        Log.v("names","인텐트받아오기");
         String[] seatnumber = seats.split(" ");
         String seatNum = seatnumber[2];
 
-        String available;
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        Log.v("names",user.getEmail());
+        String[] emailID = user.getEmail().split("\\.");
+        String DBEmail = emailID[0]+"_"+emailID[1];
 
         chosen.setText(pcbangName+ " " + seatNum+ " 번 좌석");
         reservationB = (Button)findViewById(R.id.reservationB);
 
-        ref = database.getReference("PC bangs").child(pcbangName).child("seat").child(seatNum);
+        ref = database.getReference("PC bangs").child(pcbangName);
+        myref = database.getReference("Users").child(DBEmail);
 
         long now = System.currentTimeMillis();
         now = now +3600000;
@@ -63,21 +70,48 @@ public class Reservation extends Activity {
         SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String strNow = sdfNow.format(date);
 
+       int fee=0;
+
+
+
         reservationB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String available = snapshot.child("time").getValue().toString();
+                        String available = snapshot.child("seat").child(seatNum).child("time").getValue().toString();
+                        String fee = snapshot.child("fee").getValue().toString();
                         if(available.equals("0")){
-                            ref.child("time").setValue(strNow);
-                            Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
+                            myref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String mycharge = snapshot.child("payment").getValue().toString();
+                                    if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
+                                        ref.child("seat").child(seatNum).child("time").setValue(strNow);
+                                        myref.child("reserved").setValue(pcbangName +":" +seatNum);
+                                        myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
+                                        Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                    else
+                                        Toast.makeText(getApplicationContext(),"잔액이 부족합니다.",Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
                         }
                         else{
                             Toast.makeText(getApplicationContext(),"이미 다른 사람이 예약했습니다.",Toast.LENGTH_SHORT).show();
                         }
                         startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        finish();
                     }
 
                     @Override
@@ -95,6 +129,7 @@ public class Reservation extends Activity {
                 Intent intent = new Intent(getApplicationContext(), ShowSeat.class);
                 intent.putExtra("PCbangName",pcbangName);
                 startActivity(intent);
+                finish();
             }
         });
 

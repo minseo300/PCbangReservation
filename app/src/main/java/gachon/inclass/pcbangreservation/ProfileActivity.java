@@ -29,6 +29,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +58,7 @@ import com.pedro.library.AutoPermissionsListener;
 
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -76,13 +78,14 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     //view objects
     private TextView textViewUserEmail;
     private Button buttonLogout;
-    private TextView textivewDelete;
+    private Button Delete;
     PCbangListAdapter adapter;
     ArrayList<ListViewItem> pcbangNames;
     Button pay;
     Button account;
+
     Button map;
-    Button current_location;
+    ImageButton current_location;
     TextView my_location;
 
     Double latitude;
@@ -97,10 +100,15 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
     private FusedLocationProviderClient mFusedLocationClient;
 
+    final Geocoder geocoder=new Geocoder(this);
+
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
 
     Location user_location=new Location("user location");
     Location store_location=new Location("store location");
+
+    Button checkAccount,reservedSeat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +124,13 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
         //initializing views
         my_location=(TextView)findViewById(R.id.my_location);
-        current_location=(Button)findViewById(R.id.current_location);
+        current_location=(ImageButton)findViewById(R.id.current_location);
         textViewUserEmail = (TextView) findViewById(R.id.textviewUserEmail);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
-        textivewDelete = (TextView) findViewById(R.id.textviewDelete);
+        Delete = (Button) findViewById(R.id.textviewDelete);
         pay = (Button)findViewById(R.id.payment);
         account = (Button)findViewById(R.id.account);
+
         map=(Button)findViewById(R.id.map);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +139,11 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             }
         });
         mLayout = findViewById(R.id.activity_profile); //todo
+
+        checkAccount = (Button)findViewById(R.id.payed);
+        reservedSeat = (Button)findViewById(R.id.btnreserved);
+
+
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -143,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         //textViewUserEmail의 내용을 변경해 준다.
-        textViewUserEmail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
+        textViewUserEmail.setText(user.getEmail());
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("PC bangs");
@@ -237,6 +251,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                 if(snapshot.hasChild("name")){
                     String names = snapshot.child("name").getValue().toString();
                     String store_lat=snapshot.child("latitude").getValue().toString();
@@ -247,11 +262,13 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                     pcbangNames.add(item);
 
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
                 if(snapshot.hasChild("name")){
                     String names =snapshot.child("name").getValue().toString();
                     String store_lat=snapshot.child("latitude").getValue().toString();
@@ -262,6 +279,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                     pcbangNames.add(item);
 
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -284,10 +302,12 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         //logout button event
         buttonLogout.setOnClickListener(this);
         //탈퇴
-        textivewDelete.setOnClickListener(this);
+        Delete.setOnClickListener(this);
         //
         pay.setOnClickListener(this);
         account.setOnClickListener(this);
+        checkAccount.setOnClickListener(this);
+        reservedSeat.setOnClickListener(this);
 
     }
 
@@ -295,6 +315,14 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
 
     public void onClick(View view) {
+
+        if(view == reservedSeat){
+            startActivity(new Intent(getApplicationContext(),ShowReservedSeat.class));
+        }
+
+        if(view == checkAccount){
+            startActivity(new Intent(getApplicationContext(),ShowPayment.class));
+        }
 
         if(view == pay){
             startActivity(new Intent(getApplicationContext(), PaymentActivity.class));
@@ -306,7 +334,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             startActivity(new Intent(this, LoginActivity.class));
         }
         //회원탈퇴를 클릭하면 회원정보를 삭제한다. 삭제전에 컨펌창을 하나 띄워야 겠다.
-        if(view == textivewDelete) {
+        if(view == Delete) {
             AlertDialog.Builder alert_confirm = new AlertDialog.Builder(ProfileActivity.this);
             alert_confirm.setMessage("정말 계정을 삭제 할까요?").setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
@@ -343,6 +371,8 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
 
     public void startLocationService() {
+        String city;
+        String country;
         LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -358,7 +388,23 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
             user_location.setLongitude(longitude);
 
             String message = "최근 위치 -> Latitude : " + latitude + "\nLongitude : " + longitude;
-            my_location.setText(message);
+            List<Address> citylist=null;
+            try {
+                citylist= geocoder.getFromLocation(latitude,longitude,10);
+                if(citylist != null) {
+                    if(citylist.size() == 0){
+                        Log.e("reverseGeocoding", "해당 도시 없음");
+                    }
+                    else {
+                        city = citylist.get(0).getAdminArea();
+                        country = citylist.get(0).getCountryName();
+                        my_location.setText(citylist.get(0).getAddressLine(0));
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //my_location.setText(message);
 
             GPSListener gpsListener = new GPSListener();
             long minTime = 10000;
@@ -391,8 +437,10 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
         public void onLocationChanged(Location location) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
+
             String message = "최근 위치 -> Latitude : " + latitude + "\nLongitude : " + longitude;
-            my_location.setText(message);
+
+
         }
 
         @Override

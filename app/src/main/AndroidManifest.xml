@@ -40,6 +40,8 @@
         <activity android:name=".Reservation" android:theme = "@android:style/Theme.Dialog"/>
         <activity android:name=".ShowSeat" />
         <activity android:name=".PaymentActivity" android:theme = "@android:style/Theme.Dialog"/>
+        <activity android:name=".ShowReservedSeat" android:theme = "@android:style/Theme.Dialog"/>
+        <activity android:name=".ShowPayment" android:theme = "@android:style/Theme.Dialog"/>
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"

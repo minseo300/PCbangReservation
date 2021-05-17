@@ -111,6 +111,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 //
                                 hashMap.put("nickname",uid);
                                 hashMap.put("email",email);
+                                hashMap.put("payment","");
+                                hashMap.put("reserved","");
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("Users");
                                 String[] emailID = email.split("\\.");

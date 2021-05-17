@@ -422,6 +422,7 @@ public class MapActivity extends AppCompatActivity
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         markerOptions.position(currentLatLng);
         markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);

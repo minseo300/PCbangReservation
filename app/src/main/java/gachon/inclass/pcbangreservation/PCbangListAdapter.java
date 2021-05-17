@@ -37,7 +37,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
     }
     @Override
     public void onBindViewHolder(@NonNull PcbangListViewHolder holder, int position) {
-        holder.onBind((String)dataList.get(position).getStore_name());
+        holder.onBind((String)dataList.get(position).getStore_name(),(String)dataList.get(position).getAddress());
     }
 
     @Override
@@ -73,8 +73,9 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
             });
         }
 
-        public void onBind(String dataTxt) {
+        public void onBind(String dataTxt,String addressTxt) {
             name.setText(dataTxt);
+            address.setText(addressTxt);
         }
 
 
