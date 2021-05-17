@@ -3,14 +3,25 @@ package gachon.inclass.pcbangreservation;
 import android.graphics.drawable.Drawable;
 
 public class ListViewItem {
-    private String text ;
+    private String store_name ;
 
+    private String address;
 
-    public void setText(String text) {
-        this.text = text ;
+    ListViewItem(String name,String add)
+    {
+        this.store_name=name;
+        this.address=add;
     }
 
-    public String getText() {
-        return this.text ;
+    public void setText(String name,String add) {
+
+        this.store_name = name ;
+        this.address=add;
     }
+
+    public String getStore_name() {
+        return this.store_name ;
+    }
+    public String getAddress(){return this.address;}
+
 }

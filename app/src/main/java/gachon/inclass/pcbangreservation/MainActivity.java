@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
         finish();
 
-       // startActivity(new Intent(this,MapActivity.class));
+        //startActivity(new Intent(this,MapActivity.class));
         startActivity(new Intent(this,CustomerOrOwnerActivity.class));
     }
 }

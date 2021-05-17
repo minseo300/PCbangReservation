@@ -38,6 +38,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:hint="Enter E-mail"
+            android:textColorHint="#E4E4E4"
             android:inputType="textEmailAddress"
             tools:ignore="Suspicious0dp" />
 
@@ -52,6 +53,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:hint="Enter Password"
+            android:textColorHint="#E4E4E4"
             android:inputType="textPassword" />
         <EditText
             android:id="@+id/confirmPW"
@@ -62,6 +64,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:hint="Check Password"
+            android:textColorHint="#E4E4E4"
             android:inputType="textPassword"/>
         <EditText
             android:id="@+id/pcbang_name"
@@ -71,6 +74,7 @@
             android:layout_marginLeft="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+            android:textColorHint="#E4E4E4"
             android:hint="가게 이름 (EX)라이킷PC 장지점" />
         <EditText
             android:id="@+id/number_of_seats"
@@ -80,6 +84,7 @@
             android:layout_marginLeft="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+            android:textColorHint="#E4E4E4"
             android:hint="좌석 수를 입력하세요."/>
         <EditText
             android:id="@+id/address"
@@ -89,7 +94,31 @@
             android:layout_marginLeft="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:hint="가게의 도로명 주소를 입력하세요."/>
+            android:textSize="13dp"
+            android:textColorHint="#E4E4E4"
+            android:hint="가게의 도로명 주소를 입력하세요.(건물 이름, 층 제외)"/>
+        <EditText
+            android:id="@+id/detailed_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textSize="13dp"
+            android:textColorHint="#E4E4E4"
+            android:hint="구체적인 가게 위치 정보를 입력하세요.(건물 이름, 층)"/>
+        <EditText
+            android:id="@+id/fee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#E4E4E4"
+            android:hint="시간 당 요금을 입력하세요."/>
+
         <Button
             android:id="@+id/signup_bt"
             android:layout_gravity="center_horizontal"
@@ -100,9 +129,12 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:text="Sign up"
+            android:textColorHint="#E4E4E4"
             android:textSize="20sp"
             app:backgroundTint="#FFF8C4" />
+
         <TextView
+            android:textColor="#E4E4E4"
             android:text="회원이시면 여기에서 로그인 해주세요."
             android:id="@+id/textViewSignin"
             android:textAlignment="center"

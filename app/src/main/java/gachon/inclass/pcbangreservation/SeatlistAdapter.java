@@ -54,7 +54,7 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
         public SeatListViewHolder(@NonNull View itemView, Context c) {
             super(itemView);
             ctx = c;
-            txt_name =itemView.findViewById(R.id.items);
+            txt_name =itemView.findViewById(R.id.store_list_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

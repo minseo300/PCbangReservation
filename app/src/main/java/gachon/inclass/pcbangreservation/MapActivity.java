@@ -1,6 +1,7 @@
 package gachon.inclass.pcbangreservation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,8 +38,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,6 +90,9 @@ public class MapActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -120,6 +131,75 @@ public class MapActivity extends AppCompatActivity
         setDefaultLocation();
 
 
+        FirebaseDatabase database=FirebaseDatabase.getInstance();
+        DatabaseReference reference=database.getReference();
+
+        reference.child("PC bangs").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.hasChild("name"))
+                {
+                    String store_name=snapshot.child("name").getValue().toString();
+                    Log.v("가게 이름: ",store_name);
+                    String detailed_address=snapshot.child("detailed address").getValue().toString();
+                    Log.v("구체적 주소: ",detailed_address);
+                    String lat=snapshot.child("latitude").getValue().toString();
+                    Log.v("lat: ",lat);
+                    String lon=snapshot.child("longitude").getValue().toString();
+                    Log.v("lon: ",lon);
+                    Double latitude=Double.parseDouble(lat);
+                    Double longitude=Double.parseDouble(lon);
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(store_name).snippet(detailed_address));
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//        reference.child("PC bangs").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Iterator<DataSnapshot> child=snapshot.getChildren().iterator();
+//                while(child.hasNext())
+//                {
+//                    String store_name=String.valueOf(child.next().getKey());
+//                    Log.v("가게 이름: ",store_name);
+//                    String detailed_address=child.next().child("detailed address").getValue().toString();
+//                    Log.v("구체적 주소: ",detailed_address);
+//                    String lat=child.next().child(store_name).child("latitude").getValue().toString();
+//                    Log.v("lat: ",lat);
+//                    String lon=child.next().child("longitude").getValue().toString();
+//                    Log.v("lon: ",lon);
+//                    Double latitude=Double.parseDouble(child.next().child("latitude").getValue().toString());
+//                    Double longitude=Double.parseDouble(child.next().child("longitude").getValue().toString());
+//                    mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(store_name).snippet(detailed_address));
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
@@ -351,7 +431,7 @@ public class MapActivity extends AppCompatActivity
         currentMarker = mMap.addMarker(markerOptions);
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-        mMap.moveCamera(cameraUpdate);
+        //mMap.moveCamera(cameraUpdate);
 
     }
 

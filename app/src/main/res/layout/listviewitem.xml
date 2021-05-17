@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+    android:id="@+id/list"
+android:minHeight="?android:attr/listPreferredItemHeight"
+android:gravity="center_vertical"
+android:layout_width="match_parent"
+android:layout_height="70sp">
+<LinearLayout
+    android:layout_marginTop="10sp"
+    android:layout_marginBottom="10sp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/itemlayout">
-
+    android:orientation="horizontal">
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/items"
-        android:text = "Hello"
-        android:textSize = "20sp"/>
+        android:id="@+id/store_list_name"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15sp"
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="left"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
+
+<TextView
+    android:id="@+id/address"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textSize="13sp"
+    android:layout_marginLeft="15sp"
+    android:layout_marginRight="15sp"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:gravity="left" />
+
+
+</LinearLayout>

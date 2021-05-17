@@ -11,14 +11,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.PcbangListViewHolder>{
 
     Context mContext;
-    ArrayList<String> dataList;
+    ArrayList<ListViewItem> dataList;
 
-    PCbangListAdapter(Context c, ArrayList<String> list) {
+    PCbangListAdapter(Context c, ArrayList<ListViewItem> list) {
         mContext = c;
         dataList = list;
     }
@@ -35,7 +37,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
     }
     @Override
     public void onBindViewHolder(@NonNull PcbangListViewHolder holder, int position) {
-        holder.onBind((String)dataList.get(position));
+        holder.onBind((String)dataList.get(position).getStore_name());
     }
 
     @Override
@@ -48,21 +50,22 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
 
 
     class PcbangListViewHolder extends RecyclerView.ViewHolder{
-        public TextView txt_name;
+        public TextView name;
+        public TextView address;
         Context ctx;
 
         public PcbangListViewHolder(@NonNull View itemView, Context c) {
             super(itemView);
             ctx = c;
-            txt_name =itemView.findViewById(R.id.items);
-
+            name =itemView.findViewById(R.id.store_list_name);
+            address=itemView.findViewById(R.id.address);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(ctx,ShowSeat.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("PCbangName", txt_name.getText().toString());
+                        intent.putExtra("PCbangName", name.getText().toString());
 
                         ctx.startActivity(intent);
                     }
@@ -71,7 +74,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
         }
 
         public void onBind(String dataTxt) {
-            txt_name.setText(dataTxt);
+            name.setText(dataTxt);
         }
 
 

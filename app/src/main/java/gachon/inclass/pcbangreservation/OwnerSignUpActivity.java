@@ -34,6 +34,8 @@ import java.util.List;
 
 public class OwnerSignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
+    EditText fee;
+    EditText detailed_address;
     EditText editTextAddress;
     EditText editTextEmail;
     EditText editTextPassword;
@@ -74,6 +76,8 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
         editTextPCbangName=(EditText)findViewById(R.id.pcbang_name);
         editTextAddress=(EditText)findViewById(R.id.address);
         editTextNumber_of_seats=(EditText)findViewById(R.id.number_of_seats);
+        fee=(EditText)findViewById(R.id.fee);
+        detailed_address=(EditText)findViewById(R.id.detailed_address);
 
         //textviewMessage = (TextView) findViewById(R.id.textviewMessage);
         buttonSignup = (Button) findViewById(R.id.signup_bt);
@@ -152,6 +156,8 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
                                 System.out.println(longitude);
                                 hashMap.put("latitude",latitude);
                                 hashMap.put("longitude",longitude);
+                                hashMap.put("detailed address",detailed_address.getText().toString());
+                                hashMap.put("fee",fee.getText().toString());
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("PC bangs");
                                 DatabaseReference ref =reference.child(name);
