@@ -152,17 +152,14 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
         if(view == reservedSeat){
             startActivity(new Intent(getApplicationContext(),ShowReservedSeat.class));
-            finish();
         }
 
         if(view == checkAccount){
             startActivity(new Intent(getApplicationContext(),ShowPayment.class));
-            finish();
         }
 
         if(view == pay){
             startActivity(new Intent(getApplicationContext(), PaymentActivity.class));
-            finish();
         }
 
         if (view == buttonLogout) {

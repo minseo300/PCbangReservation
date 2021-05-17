@@ -88,7 +88,7 @@ public class Reservation extends Activity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     String mycharge = snapshot.child("payment").getValue().toString();
                                     if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
-                                        ref.child("time").setValue(strNow);
+                                        ref.child("seat").child(seatNum).child("time").setValue(strNow);
                                         myref.child("reserved").setValue(pcbangName +":" +seatNum);
                                         myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
                                         Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
