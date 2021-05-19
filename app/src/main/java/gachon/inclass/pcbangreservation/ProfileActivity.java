@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
         AutoPermissions.Companion.loadAllPermissions(ProfileActivity.this, 101);
 
-
+        Log.v("names","profile 도착");
 
 
 

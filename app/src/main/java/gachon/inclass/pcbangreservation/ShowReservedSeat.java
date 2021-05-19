@@ -57,7 +57,7 @@ public class ShowReservedSeat  extends Activity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                String address = snapshot.child("reservedAddress").getValue().toString();
                 String text = snapshot.child("reserved").getValue().toString();
                 if(text.equals(""))
                     txt.setText("예약된 좌석이 없습니다."); //예약된 좌석이 없는 경우
@@ -70,7 +70,13 @@ public class ShowReservedSeat  extends Activity {
                     PCref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-
+                            String time = snapshot.child(address).child("seat").child("time").child(texts[1]).getValue().toString();
+                            if (time.compareTo(strNow) < 0) {
+                                ref.child("reserved").setValue("");
+                                txt.setText("예약된 좌석이 없습니다.");
+                            }
+                            else
+                                txt.setText(text);
                         }
                     });
                 }
