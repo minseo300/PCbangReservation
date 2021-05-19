@@ -234,37 +234,11 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                if(snapshot.hasChild("name")){
-                    String names = snapshot.child("name").getValue().toString();
-                    String store_lat=snapshot.child("latitude").getValue().toString();
-                    String store_lon=snapshot.child("longitude").getValue().toString();
-                    String address=snapshot.child("address").getValue().toString();
-                    String detail = snapshot.child("detailed address").getValue().toString();
-                    ListViewItem item=new ListViewItem(names,address,detail);
-
-                    pcbangNames.add(item);
-
-                }
-
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                if(snapshot.hasChild("name")){
-                    String names =snapshot.child("name").getValue().toString();
-                    String store_lat=snapshot.child("latitude").getValue().toString();
-                    String store_lon=snapshot.child("longitude").getValue().toString();
-                    String address=snapshot.child("address").getValue().toString();
-                    String detail = snapshot.child("detailed address").getValue().toString();
-                    ListViewItem item=new ListViewItem(names,address,detail);
-
-                    pcbangNames.add(item);
-
-                }
-
                 adapter.notifyDataSetChanged();
             }
 

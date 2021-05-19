@@ -71,8 +71,9 @@ public class ShowReservedSeat  extends Activity {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
                             String time = task.getResult().getValue().toString();
-                            if (time.compareTo(strNow) < 0) {
+                            if (time.compareTo(strNow) > 0) {
                                 ref.child("reserved").setValue("");
+                                ref.child("reservedAddress").setValue("");
                                 txt.setText("예약된 좌석이 없습니다.");
                             }
                             else
