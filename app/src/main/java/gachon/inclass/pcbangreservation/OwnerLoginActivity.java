@@ -90,7 +90,7 @@ public class OwnerLoginActivity extends AppCompatActivity implements View.OnClic
                             {
 
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                                startActivity(new Intent(getApplicationContext(), OwnerProfileActivity.class));
                             }
 
                         } else {

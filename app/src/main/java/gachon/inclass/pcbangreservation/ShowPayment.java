@@ -47,7 +47,11 @@ public class ShowPayment  extends Activity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String text = snapshot.child("payment").getValue().toString();
-                txt.setText(text);
+                if(text.equals(""))
+                    txt.setText("충전된 금액이 없습니다.");
+                else
+                    txt.setText(text);
+
             }
 
             @Override
