@@ -51,18 +51,30 @@ public class PaymentActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String money = charged.getText().toString();
-                ref.child(DBEmail).child("payment").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String moneys = task.getResult().getValue().toString();
-                        ref.setValue(Integer.toString(Integer.parseInt(moneys) + Integer.parseInt(money)));
+
+                try {
+                    if (Integer.parseInt(money) > 0) {
+
+
+                        ref.child(DBEmail).child("payment").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                String moneys = task.getResult().getValue().toString();
+                                ref.setValue(Integer.toString(Integer.parseInt(moneys) + Integer.parseInt(money)));
+                            }
+                        });
+                        Toast.makeText(getApplicationContext(), money + " 원이 충전되었습니다!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "잘못된 값이 입력되었습니다", Toast.LENGTH_SHORT).show();
                     }
-                });
-                Toast.makeText(getApplicationContext(),money+" 원이 충전되었습니다!",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
-                setResult(RESULT_OK, intent);
-                finish();
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"숫자를 입력해주시기 바랍니다.",Toast.LENGTH_SHORT).show();
+                }
             }
+
         });
 
         cancelB = findViewById(R.id.payCancel);
