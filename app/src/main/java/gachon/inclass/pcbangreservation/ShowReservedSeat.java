@@ -67,8 +67,8 @@ public class ShowReservedSeat  extends Activity {
                     PCref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String time = snapshot.child("seat").child(texts[1]).getValue().toString();
-                            if (time.compareTo(strNow) > 0) {
+                            String time = snapshot.child("seat").child(texts[1]).child("time").getValue().toString();
+                            if (time.compareTo(strNow) < 0) {
                                 ref.child("reserved").setValue("");
                                 txt.setText("예약된 좌석이 없습니다.");
                             }
