@@ -103,7 +103,7 @@ public class Reservation extends Activity {
                                     String mycharge = snapshot.child("payment").getValue().toString();
                                     if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
                                         ref.child("seat").child(seatNum).child("time").setValue(strNow);
-                                        myref.child("reserved").setValue(chosen.getText().toString() +":" +seatNum);
+                                        myref.child("reserved").setValue(chosen.getText().toString());
                                         myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
                                         myref.child("reservedAddress").setValue(address);
                                         Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
