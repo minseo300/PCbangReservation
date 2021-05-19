@@ -64,13 +64,13 @@ public class ShowReservedSeat  extends Activity {
 
                 else {//현재 예약되어 있는 좌석이 있는 경우
                     String[] texts = text.split(":");
-                    PCref = database.getReference("PC bangs");
+                    PCref = database.getReference("PC bangs").child(address).child("seat").child(texts[1]);
 
 
                     PCref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            String time = snapshot.child(address).child("seat").child(texts[1]).child("time").getValue().toString();
+                            String time = task.getResult().getValue().toString();
                             if (time.compareTo(strNow) < 0) {
                                 ref.child("reserved").setValue("");
                                 txt.setText("예약된 좌석이 없습니다.");
