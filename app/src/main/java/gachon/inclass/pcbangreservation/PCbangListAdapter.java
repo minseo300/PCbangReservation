@@ -57,8 +57,8 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
         public PcbangListViewHolder(@NonNull View itemView, Context c) {
             super(itemView);
             ctx = c;
-            name =itemView.findViewById(R.id.store_list_name);
-            address=itemView.findViewById(R.id.address);
+            name = itemView.findViewById(R.id.store_list_name);
+            address = itemView.findViewById(R.id.address);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

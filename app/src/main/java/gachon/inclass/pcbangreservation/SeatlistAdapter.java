@@ -16,12 +16,10 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
 
     Context mContext;
     ArrayList<String> dataList;
-    String name;
 
-    SeatlistAdapter(Context c, ArrayList<String> list,String names) {
+    SeatlistAdapter(Context c, ArrayList<String> list, String name) {
         mContext = c;
         dataList = list;
-        name = names;
     }
 
     @NonNull
@@ -54,7 +52,7 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
         public SeatListViewHolder(@NonNull View itemView, Context c) {
             super(itemView);
             ctx = c;
-            txt_name =itemView.findViewById(R.id.store_list_name);
+            txt_name =itemView.findViewById(R.id.store_list_name); // 보류2: items로 되어있었는데 오류나서 일단 store_list_name으로 놓음
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,7 +61,7 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
                     if (pos != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(ctx, Reservation.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("seats", txt_name.getText().toString());
-                        intent.putExtra("name",name);
+
                         ctx.startActivity(intent);
                     }
                 }
