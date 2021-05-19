@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,31 +57,33 @@ public class ShowReservedSeat  extends Activity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                String address = snapshot.child("reservedAddress").getValue().toString();
                 String text = snapshot.child("reserved").getValue().toString();
                 if(text.equals(""))
                     txt.setText("예약된 좌석이 없습니다."); //예약된 좌석이 없는 경우
 
                 else {//현재 예약되어 있는 좌석이 있는 경우
                     String[] texts = text.split(":");
-                    PCref = database.getReference("PC bangs").child(texts[0]);
+                    PCref = database.getReference("PC bangs").child(address).child("seat").child(texts[1]);
 
-                    PCref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    PCref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String time = snapshot.child("seat").child(texts[1]).child("time").getValue().toString();
-                            if (time.compareTo(strNow) < 0) {
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            String time = task.getResult().getValue().toString();
+                            if(time.equals("0")){
                                 ref.child("reserved").setValue("");
+                                ref.child("reservedAddress").setValue("");
                                 txt.setText("예약된 좌석이 없습니다.");
                             }
-                            else
-                                txt.setText(text);
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
+                            else {
+                                if (time.compareTo(strNow) < 0) {
+                                    ref.child("reserved").setValue("");
+                                    ref.child("reservedAddress").setValue("");
+                                    txt.setText("예약된 좌석이 없습니다.");
+                                } else
+                                    txt.setText(text);
+                            }
                         }
                     });
                 }

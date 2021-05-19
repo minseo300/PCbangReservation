@@ -37,7 +37,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
     }
     @Override
     public void onBindViewHolder(@NonNull PcbangListViewHolder holder, int position) {
-        holder.onBind((String)dataList.get(position).getStore_name(),(String)dataList.get(position).getAddress());
+        holder.onBind((String)dataList.get(position).getStore_name(),(String)dataList.get(position).getAddress(),(String)dataList.get(position).getDetail());
     }
 
     @Override
@@ -52,6 +52,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
     class PcbangListViewHolder extends RecyclerView.ViewHolder{
         public TextView name;
         public TextView address;
+        public TextView detail;
         Context ctx;
 
         public PcbangListViewHolder(@NonNull View itemView, Context c) {
@@ -59,6 +60,7 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
             ctx = c;
             name = itemView.findViewById(R.id.store_list_name);
             address = itemView.findViewById(R.id.address);
+            detail = itemView.findViewById(R.id.detail_address);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -66,16 +68,18 @@ public class PCbangListAdapter  extends RecyclerView.Adapter<PCbangListAdapter.P
                     if (pos != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(ctx,ShowSeat.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("PCbangName", name.getText().toString());
-
+                        intent.putExtra("address",address.getText().toString());
+                        Toast.makeText(c,address.getText().toString(),Toast.LENGTH_SHORT).show();
                         ctx.startActivity(intent);
                     }
                 }
             });
         }
 
-        public void onBind(String dataTxt,String addressTxt) {
+        public void onBind(String dataTxt,String addressTxt,String detailTXT) {
             name.setText(dataTxt);
             address.setText(addressTxt);
+            detail.setText(detailTXT);
         }
 
 

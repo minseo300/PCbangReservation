@@ -39,6 +39,7 @@ public class ShowSeat  extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("PCbangName");
+        String address = intent.getStringExtra("address");
 
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
         nameText.setText(name);
@@ -49,7 +50,7 @@ public class ShowSeat  extends AppCompatActivity {
         String strNow = sdfNow.format(date);
 
         seatsNumber = new ArrayList<>();
-        ref = database.getReference("PC bangs").child(name).child("seat");
+        ref = database.getReference("PC bangs").child(address).child("seat");
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
@@ -115,7 +116,7 @@ public class ShowSeat  extends AppCompatActivity {
         RecyclerView rcView = findViewById(R.id.SeatrcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new SeatlistAdapter(getApplicationContext(),seatsNumber,name);
+        adapter = new SeatlistAdapter(getApplicationContext(),seatsNumber,address);
         rcView.setAdapter(adapter);
 
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,10 +17,12 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
 
     Context mContext;
     ArrayList<String> dataList;
+    String name;
 
-    SeatlistAdapter(Context c, ArrayList<String> list, String name) {
+    SeatlistAdapter(Context c, ArrayList<String> list, String names) {
         mContext = c;
         dataList = list;
+        name = names;
     }
 
     @NonNull
@@ -27,7 +30,7 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
     public SeatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context ctx = parent.getContext();
         LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.listviewitem, parent, false);
+        View view = inflater.inflate(R.layout.listviewitemseat, parent, false);
 
         SeatListViewHolder cvh =new  SeatListViewHolder(view,mContext);
         return cvh;
@@ -61,7 +64,7 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
                     if (pos != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(ctx, Reservation.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("seats", txt_name.getText().toString());
-
+                        intent.putExtra("address",name);
                         ctx.startActivity(intent);
                     }
                 }
