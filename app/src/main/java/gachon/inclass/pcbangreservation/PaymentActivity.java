@@ -60,7 +60,7 @@ public class PaymentActivity extends Activity {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
                                 String moneys = task.getResult().getValue().toString();
-                                ref.setValue(Integer.toString(Integer.parseInt(moneys) + Integer.parseInt(money)));
+                                ref.child(DBEmail).child("payment").setValue(Integer.toString(Integer.parseInt(moneys) + Integer.parseInt(money)));
                             }
                         });
                         Toast.makeText(getApplicationContext(), money + " 원이 충전되었습니다!", Toast.LENGTH_LONG).show();
