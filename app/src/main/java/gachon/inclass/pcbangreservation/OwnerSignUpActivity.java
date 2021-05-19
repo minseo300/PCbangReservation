@@ -160,7 +160,7 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
                                 hashMap.put("fee",fee.getText().toString());
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("PC bangs");
-                                DatabaseReference ref =reference.child(name);
+                                DatabaseReference ref =reference.child(address);
 
                                 ref.setValue(hashMap);
                                 for(int i=1;i<=seats;i++) {

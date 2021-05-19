@@ -223,8 +223,9 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                     String names =snapshot.child("name").getValue().toString();
                     String store_lat=snapshot.child("latitude").getValue().toString();
                     String store_lon=snapshot.child("longitude").getValue().toString();
-                    String detailed_address=snapshot.child("address").getValue().toString()+" "+snapshot.child("detailed address").getValue().toString();
-                    ListViewItem item=new ListViewItem(names,detailed_address);
+                    String address=snapshot.child("address").getValue().toString();
+                    String detail = snapshot.child("detailed address").getValue().toString();
+                    ListViewItem item=new ListViewItem(names,address,detail);
 
                     pcbangNames.add(item);
                 }
@@ -238,8 +239,9 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                     String names = snapshot.child("name").getValue().toString();
                     String store_lat=snapshot.child("latitude").getValue().toString();
                     String store_lon=snapshot.child("longitude").getValue().toString();
-                    String detailed_address=snapshot.child("address").getValue().toString()+" "+snapshot.child("detailed address").getValue().toString();
-                    ListViewItem item=new ListViewItem(names,detailed_address);
+                    String address=snapshot.child("address").getValue().toString();
+                    String detail = snapshot.child("detailed address").getValue().toString();
+                    ListViewItem item=new ListViewItem(names,address,detail);
 
                     pcbangNames.add(item);
 
@@ -255,8 +257,9 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                     String names =snapshot.child("name").getValue().toString();
                     String store_lat=snapshot.child("latitude").getValue().toString();
                     String store_lon=snapshot.child("longitude").getValue().toString();
-                    String detailed_address=snapshot.child("address").getValue().toString()+" "+snapshot.child("detailed address").getValue().toString();
-                    ListViewItem item=new ListViewItem(names,detailed_address);
+                    String address=snapshot.child("address").getValue().toString();
+                    String detail = snapshot.child("detailed address").getValue().toString();
+                    ListViewItem item=new ListViewItem(names,address,detail);
 
                     pcbangNames.add(item);
 

@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +36,7 @@ public class Reservation extends Activity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref;
     DatabaseReference myref;
+    DatabaseReference nameRef;
     DatabaseReference feeref;
     TextView chosen;
 
@@ -46,11 +49,13 @@ public class Reservation extends Activity {
 
         Intent intent = getIntent();
         String seats = intent.getStringExtra("seats");
-        String pcbangName = intent.getStringExtra("name");
+        String address = intent.getStringExtra("address");
+        Toast.makeText(getApplicationContext(),address,Toast.LENGTH_SHORT).show();
 
         chosen = (TextView)findViewById(R.id.chosenSeat);
         String[] seatnumber = seats.split(" ");
         String seatNum = seatnumber[2];
+        Toast.makeText(getApplicationContext(),seatNum,Toast.LENGTH_SHORT).show();
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -58,10 +63,10 @@ public class Reservation extends Activity {
         String[] emailID = user.getEmail().split("\\.");
         String DBEmail = emailID[0]+"_"+emailID[1];
 
-        chosen.setText(pcbangName+ " " + seatNum+ " 번 좌석");
+
         reservationB = (Button)findViewById(R.id.reservationB);
 
-        ref = database.getReference("PC bangs").child(pcbangName);
+        ref = database.getReference("PC bangs").child(address);
         myref = database.getReference("Users").child(DBEmail);
 
         long now = System.currentTimeMillis();
@@ -72,7 +77,16 @@ public class Reservation extends Activity {
 
        int fee=0;
 
+       nameRef = database.getReference("PC bangs").child(address).child("name");
 
+        nameRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                String name = task.getResult().getValue().toString();
+                chosen.setText(name + ":" + seatNum );
+
+            }
+        });
 
         reservationB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +103,7 @@ public class Reservation extends Activity {
                                     String mycharge = snapshot.child("payment").getValue().toString();
                                     if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
                                         ref.child("seat").child(seatNum).child("time").setValue(strNow);
-                                        myref.child("reserved").setValue(pcbangName +":" +seatNum);
+                                        myref.child("reserved").setValue(chosen.getText().toString() +":" +seatNum);
                                         myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
                                         Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
 
@@ -127,7 +141,8 @@ public class Reservation extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ShowSeat.class);
-                intent.putExtra("PCbangName",pcbangName);
+                intent.putExtra("PCbangName",chosen.getText().toString());
+                intent.putExtra("address",address);
                 startActivity(intent);
                 finish();
             }
