@@ -46,7 +46,6 @@ public class ShowReservedSeat  extends Activity {
         String DBEmail = emailID[0]+"_"+emailID[1];
 
         long now = System.currentTimeMillis();
-        now = now +3600000;
         Date date = new Date(now);
         SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String strNow = sdfNow.format(date);
@@ -68,8 +67,8 @@ public class ShowReservedSeat  extends Activity {
                     PCref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String time = snapshot.child("seat").child(texts[1]).getValue().toString();
-                            if (time.compareTo(strNow) > 0) {
+                            String time = snapshot.child("seat").child(texts[1]).child("time").getValue().toString();
+                            if (time.compareTo(strNow) < 0) {
                                 ref.child("reserved").setValue("");
                                 txt.setText("예약된 좌석이 없습니다.");
                             }
