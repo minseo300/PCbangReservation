@@ -64,7 +64,7 @@ public class ShowReservedSeat  extends Activity {
 
                 else {//현재 예약되어 있는 좌석이 있는 경우
                     String[] texts = text.split(":");
-                    PCref = database.getReference("PC bangs").child(address).child("seat").child(texts[1]);
+                    PCref = database.getReference("PC bangs").child(address).child("seat").child(texts[1]).child("time");
 
 
                     PCref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
