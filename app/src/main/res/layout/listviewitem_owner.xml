@@ -16,7 +16,7 @@
             android:id="@+id/seat_num"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15sp"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_weight="5"
             android:textSize="17sp"
             android:textStyle="bold"
@@ -24,18 +24,18 @@
             android:maxLines="1"
             android:gravity="left"
             />
-
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="left" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="13sp"
-        android:layout_marginLeft="15sp"
-        android:layout_marginRight="15sp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:gravity="left" />
+
 </LinearLayout>

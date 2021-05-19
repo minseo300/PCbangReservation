@@ -58,7 +58,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
     private TextView textivewDelete;
     private Button buttonUploadSeatgrid;
     SeatlistAdapterOwner adapter;
-    ArrayList<ListViewItemOwner> seatNums;
+    ArrayList<ListViewItemOwner> seatNums = new ArrayList<>();
 
 
     @Override
@@ -220,6 +220,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
             alert_confirm.show();
         }
         if(view == buttonUploadSeatgrid){
+            Log.d("갤러리버튼","갤러리버튼 클릭");
             Intent galleryIntent = new Intent();
             galleryIntent.setType("image/*");
             galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
