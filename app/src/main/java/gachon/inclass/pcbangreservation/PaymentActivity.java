@@ -10,10 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -47,7 +51,13 @@ public class PaymentActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String money = charged.getText().toString();
-                ref.child(DBEmail).child("payment").setValue(money);
+                ref.child(DBEmail).child("payment").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String moneys = task.getResult().getValue().toString();
+                        ref.setValue(Integer.toString(Integer.parseInt(moneys) + Integer.parseInt(money)));
+                    }
+                });
                 Toast.makeText(getApplicationContext(),money+" 원이 충전되었습니다!",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
                 setResult(RESULT_OK, intent);
