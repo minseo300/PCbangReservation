@@ -46,7 +46,6 @@ public class ShowReservedSeat  extends Activity {
         String DBEmail = emailID[0]+"_"+emailID[1];
 
         long now = System.currentTimeMillis();
-        now = now +3600000;
         Date date = new Date(now);
         SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String strNow = sdfNow.format(date);
