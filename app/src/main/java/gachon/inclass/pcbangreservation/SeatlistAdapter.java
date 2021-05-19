@@ -35,6 +35,7 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
         SeatListViewHolder cvh =new  SeatListViewHolder(view,mContext);
         return cvh;
     }
+
     @Override
     public void onBindViewHolder(@NonNull SeatListViewHolder holder, int position) {
         holder.onBind((String)dataList.get(position));
@@ -74,7 +75,6 @@ public class SeatlistAdapter   extends RecyclerView.Adapter<SeatlistAdapter.Seat
         public void onBind(String dataTxt) {
             txt_name.setText(dataTxt);
         }
-
 
     }
 }
