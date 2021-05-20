@@ -241,9 +241,6 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
                     String store_lon=snapshot.child("longitude").getValue().toString();
                     String address=snapshot.child("address").getValue().toString();
                     String detail = snapshot.child("detailed address").getValue().toString();
-                    ListViewItem item=new ListViewItem(names,address,detail);
-
-                    pcbangNames.add(item);
 
                 }
 
