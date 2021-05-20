@@ -128,49 +128,50 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
 
                     user.sendEmailVerification().addOnCompleteListener(OwnerSignUpActivity.this, new OnCompleteListener<Void>() {
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if(task.isSuccessful()) {
                                 String email = user.getEmail();
                                 String uid = user.getUid();
-                                HashMap<Object,String> hashMap = new HashMap<>();
+                                HashMap<Object, String> hashMap = new HashMap<>();
 //
-                                hashMap.put("email",email);
-                                hashMap.put("uid",uid);
-                                hashMap.put("name",name);
-                                hashMap.put("seats",String.valueOf(seats));
-                                hashMap.put("address",address);
+                                hashMap.put("email", email);
+                                hashMap.put("uid", uid);
+                                hashMap.put("name", name);
+                                hashMap.put("seats", String.valueOf(seats));
+                                hashMap.put("address", address);
 
-                                List<Address> list=null;
-                                try{
-                                    list=geocoder.getFromLocationName(address,10); //지역이름, 읽을 개수
+                                List<Address> list = null;
+                                try {
+                                    list = geocoder.getFromLocationName(address, 10); //지역이름, 읽을 개수
+
+                                    for (Address t : list) {
+                                        latitude = String.valueOf(t.getLatitude());
+                                        longitude = String.valueOf(t.getLongitude());
+                                    }
+
+                                    System.out.println(latitude);
+                                    System.out.println(longitude);
+                                    hashMap.put("latitude", latitude);
+                                    hashMap.put("longitude", longitude);
+                                    hashMap.put("detailed address", detailed_address.getText().toString());
+                                    hashMap.put("fee", fee.getText().toString());
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference reference = database.getReference("PC bangs");
+                                    DatabaseReference ref = reference.child(address);
+
+                                    ref.setValue(hashMap);
+                                    for (int i = 1; i <= seats; i++) {
+                                        ref.child("seat").child(String.valueOf(i)).child("number").setValue(String.valueOf(i));
+                                        ref.child("seat").child(String.valueOf(i)).child("time").setValue("0");
+                                    }
+
+                                    Toast.makeText(OwnerSignUpActivity.this, "이메일 인증 후 로그인 하세요", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(), OwnerLoginActivity.class));
                                 } catch (IOException e)
-                                {
-                                    e.printStackTrace();
-                                    Toast.makeText(getApplicationContext(),"도로명 주소가 잘못 입력되었습니다",Toast.LENGTH_SHORT).show();
-                                    Log.e("test","입출력 오류- 서버에서 주소 변환시 에러 발생");
-                                }
-                                for(Address t:list){
-                                    latitude=String.valueOf(t.getLatitude());
-                                    longitude=String.valueOf(t.getLongitude());
-                                }
-
-                                System.out.println(latitude);
-                                System.out.println(longitude);
-                                hashMap.put("latitude",latitude);
-                                hashMap.put("longitude",longitude);
-                                hashMap.put("detailed address",detailed_address.getText().toString());
-                                hashMap.put("fee",fee.getText().toString());
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference reference = database.getReference("PC bangs");
-                                DatabaseReference ref =reference.child(address);
-
-                                ref.setValue(hashMap);
-                                for(int i=1;i<=seats;i++) {
-                                    ref.child("seat").child(String.valueOf(i)).child("number").setValue(String.valueOf(i));
-                                    ref.child("seat").child(String.valueOf(i)).child("time").setValue("0");
-                                }
-
-                                Toast.makeText(OwnerSignUpActivity.this,"이메일 인증 후 로그인 하세요",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), OwnerLoginActivity.class));
+                            {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(),"도로명 주소가 잘못 입력되었습니다",Toast.LENGTH_SHORT).show();
+                                Log.e("test","입출력 오류- 서버에서 주소 변환시 에러 발생");
+                            }
                             }
                             else{
                                 Toast.makeText(OwnerSignUpActivity.this,"Authentication failed.",Toast.LENGTH_SHORT).show();
