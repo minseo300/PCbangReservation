@@ -145,6 +145,7 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
                                 } catch (IOException e)
                                 {
                                     e.printStackTrace();
+                                    Toast.makeText(getApplicationContext(),"도로명 주소가 잘못 입력되었습니다",Toast.LENGTH_SHORT).show();
                                     Log.e("test","입출력 오류- 서버에서 주소 변환시 에러 발생");
                                 }
                                 for(Address t:list){
@@ -180,7 +181,7 @@ public class OwnerSignUpActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     //에러발생
                     //textviewMessage.setText("에러유형\n - 이미 등록된 이메일  \n -암호 최소 6자리 이상 \n - 서버에러");
-                    Toast.makeText(OwnerSignUpActivity.this, "이메일 안보내지는 듯--등록 에러!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OwnerSignUpActivity.this, "이메일이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 progressDialog.dismiss();
             }
