@@ -1,10 +1,12 @@
 package gachon.inclass.pcbangreservation;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +36,7 @@ public class ShowSeat  extends AppCompatActivity {
 
     Button btnGoBack;
     TextView nameText;
+    ImageView imageview;
     SeatlistAdapter adapter;
     ArrayList<String> seatsNumber;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -43,6 +53,7 @@ public class ShowSeat  extends AppCompatActivity {
 
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
         nameText.setText(name);
+        imageview = (ImageView)findViewById(R.id.imageView);
 
         long now = System.currentTimeMillis();
         Date date = new Date(now);
@@ -128,5 +139,29 @@ public class ShowSeat  extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        Log.d("으아",name+"_seats.jpg");
+        StorageReference storageRef = storage.getReference().child(name+"_seats.jpg");
+        storageRef.getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        try {
+                            Log.d("uri", String.valueOf(uri));
+                            Glide.with(getApplicationContext()).load(uri).into(imageview);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+
     }
 }

@@ -6,22 +6,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,8 +62,9 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
     private Button buttonLogout;
     private TextView textivewDelete;
     private Button buttonUploadSeatgrid;
+    private ImageView seatImage;
     SeatlistAdapterOwner adapter;
-    ArrayList<ListViewItemOwner> seatNums;
+    ArrayList<ListViewItemOwner> seatNums = new ArrayList<>();
 
 
     @Override
@@ -71,6 +77,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
         buttonUploadSeatgrid = (Button) findViewById(R.id.buttonUploadSeatgrid);
+        seatImage = (ImageView) findViewById(R.id.imageView);
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -99,7 +106,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
                     Log.v("names",email);
                     if(email.equals(PCbangEmail)) {
                         textViewPCbangName.setText(snapshot.child("name").getValue().toString());
-                        DatabaseReference ref_seat = ref.child(textViewPCbangName.getText().toString()); // 보류1: 될지 모르겠음 (reference 안 reference 구조)
+                        DatabaseReference ref_seat = ref.child(snapshot.child("address").getValue().toString()); // 보류1: 될지 모르겠음 (reference 안 reference 구조)
                         ref_seat.child("seat").addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -181,6 +188,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
         //logout button event
         buttonLogout.setOnClickListener(this);
         textivewDelete.setOnClickListener(this);
+        buttonUploadSeatgrid.setOnClickListener(this);
 
     }
 
@@ -224,8 +232,6 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
             galleryIntent.setType("image/*");
             galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(galleryIntent, 1);
-
-            File file = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         }
     }
 
@@ -240,10 +246,10 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
                     in.close();
 
                     FirebaseStorage storage = FirebaseStorage.getInstance();
-                    StorageReference storageRef = storage.getReference();
                     String filename = textViewPCbangName.getText().toString() + "_seats.jpg";
+                    StorageReference storageRef = storage.getReference().child(filename);
                     Uri file = getImageUri(getApplicationContext(), img);
-                    Log.d("Uri", String.valueOf(file));
+                    Log.d("uri", String.valueOf(file));
                     UploadTask uploadTask = storageRef.putFile(file);
 
                     uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -255,6 +261,28 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(getApplicationContext(), "사진 등록완료!", Toast.LENGTH_SHORT);
+                        }
+                    });
+
+//                    File saveFile = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/seats_img");
+//                    if(!saveFile.isDirectory()){
+//                        saveFile.mkdir();
+//                    }
+                    storageRef.getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    try {
+                                        Log.d("uri", String.valueOf(uri));
+                                        Glide.with(getApplicationContext()).load(uri).into(seatImage);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
                         }
                     });
                 } catch (FileNotFoundException e) {
