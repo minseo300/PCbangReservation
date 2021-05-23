@@ -37,7 +37,7 @@ public class Reservation extends Activity {
     DatabaseReference ref;
     DatabaseReference myref;
     DatabaseReference nameRef;
-    DatabaseReference feeref;
+    DatabaseReference reservedRef;
     TextView chosen;
 
     @Override
@@ -91,28 +91,168 @@ public class Reservation extends Activity {
         reservationB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                myref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String available = snapshot.child("seat").child(seatNum).child("time").getValue().toString();
-                        String fee = snapshot.child("fee").getValue().toString();
-                        if(available.equals("0")){
-                            myref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.getResult().child("reserved").getValue().toString().equals("")){
+                            String addresses = task.getResult().child("reservedAddress").getValue().toString();
+                            String reserved = task.getResult().child("reserved").getValue().toString();
+                            String[] seatnumber = reserved.split(":");
+
+                            reservedRef = database.getReference("PC bangs").child(addresses).child("seat").child(seatnumber[1]).child("time");
+                            reservedRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    String mycharge = snapshot.child("payment").getValue().toString();
-                                    if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
-                                        ref.child("seat").child(seatNum).child("time").setValue(strNow);
-                                        myref.child("reserved").setValue(chosen.getText().toString());
-                                        myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
-                                        myref.child("reservedAddress").setValue(address);
-                                        Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    long now = System.currentTimeMillis();
+                                    Date date = new Date(now);
+                                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                    String strNow = sdfNow.format(date);
+
+                                    String time = task.getResult().getValue().toString();
+                                    if(time.equals("0")){
+                                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String available = snapshot.child("seat").child(seatNum).child("time").getValue().toString();
+                                                String fee = snapshot.child("fee").getValue().toString();
+                                                if(available.equals("0")){
+                                                    myref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            String mycharge = snapshot.child("payment").getValue().toString();
+                                                            if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
+                                                                ref.child("seat").child(seatNum).child("time").setValue(strNow);
+                                                                myref.child("reserved").setValue(chosen.getText().toString());
+                                                                myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
+                                                                myref.child("reservedAddress").setValue(address);
+                                                                Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
+
+                                                            }
+
+                                                            else
+                                                                Toast.makeText(getApplicationContext(),"잔액이 부족합니다.",Toast.LENGTH_SHORT).show();
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+                                                }
+                                                else{
+                                                    Toast.makeText(getApplicationContext(),"이미 다른 사람이 예약했습니다.",Toast.LENGTH_SHORT).show();
+                                                }
+                                                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
+
+                                    else{
+                                        if (time.compareTo(strNow) < 0) {
+                                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    String available = snapshot.child("seat").child(seatNum).child("time").getValue().toString();
+                                                    String fee = snapshot.child("fee").getValue().toString();
+                                                    if(available.equals("0")){
+                                                        myref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                String mycharge = snapshot.child("payment").getValue().toString();
+                                                                if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
+                                                                    ref.child("seat").child(seatNum).child("time").setValue(strNow);
+                                                                    myref.child("reserved").setValue(chosen.getText().toString());
+                                                                    myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
+                                                                    myref.child("reservedAddress").setValue(address);
+                                                                    Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
+
+                                                                }
+
+                                                                else
+                                                                    Toast.makeText(getApplicationContext(),"잔액이 부족합니다.",Toast.LENGTH_SHORT).show();
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                                            }
+                                                        });
+
+                                                    }
+                                                    else{
+                                                        Toast.makeText(getApplicationContext(),"이미 다른 사람이 예약했습니다.",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                                                    finish();
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
+
+
+                                        }
+                                        else{
+                                            Toast.makeText(getApplicationContext(),"이미 예약한 좌석이 있습니다",Toast.LENGTH_SHORT).show();
+                                        }
 
                                     }
 
-                                    else
-                                        Toast.makeText(getApplicationContext(),"잔액이 부족합니다.",Toast.LENGTH_SHORT).show();
 
+                                }
+                            });
+                        }
+
+                        else{
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String available = snapshot.child("seat").child(seatNum).child("time").getValue().toString();
+                                    String fee = snapshot.child("fee").getValue().toString();
+                                    if(available.equals("0")){
+                                        myref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String mycharge = snapshot.child("payment").getValue().toString();
+                                                if(Integer.parseInt(mycharge) > Integer.parseInt(fee)){
+                                                    ref.child("seat").child(seatNum).child("time").setValue(strNow);
+                                                    myref.child("reserved").setValue(chosen.getText().toString());
+                                                    myref.child("payment").setValue(Integer.parseInt(mycharge) - Integer.parseInt(fee));
+                                                    myref.child("reservedAddress").setValue(address);
+                                                    Toast.makeText(getApplicationContext(),"예약되었습니다!",Toast.LENGTH_SHORT).show();
+
+                                                }
+
+                                                else
+                                                    Toast.makeText(getApplicationContext(),"잔액이 부족합니다.",Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(),"이미 다른 사람이 예약했습니다.",Toast.LENGTH_SHORT).show();
+                                    }
+                                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                                    finish();
                                 }
 
                                 @Override
@@ -120,20 +260,11 @@ public class Reservation extends Activity {
 
                                 }
                             });
-
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(),"이미 다른 사람이 예약했습니다.",Toast.LENGTH_SHORT).show();
-                        }
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
+
+
             }
         });
 
