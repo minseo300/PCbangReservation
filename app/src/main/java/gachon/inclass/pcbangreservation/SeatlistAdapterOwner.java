@@ -1,10 +1,12 @@
 package gachon.inclass.pcbangreservation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +17,12 @@ public class SeatlistAdapterOwner extends RecyclerView.Adapter<SeatlistAdapterOw
 
     Context mContext;
     ArrayList<ListViewItemOwner> dataList;
+    private String PCbangAddress;
 
-    SeatlistAdapterOwner(Context c, ArrayList<ListViewItemOwner> list) {
+    SeatlistAdapterOwner(Context c, ArrayList<ListViewItemOwner> list, String address) {
         mContext = c;
         dataList = list;
+        PCbangAddress = address;
     }
 
     @NonNull
@@ -54,19 +58,20 @@ public class SeatlistAdapterOwner extends RecyclerView.Adapter<SeatlistAdapterOw
             ctx = c;
             num = itemView.findViewById(R.id.seat_num);
             time = itemView.findViewById(R.id.time);
-            // 보류2: 여기까지 될지 안될지 모르겠어서 시간수정기능 아직 추가안함
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int pos = getAdapterPosition();
-//                    if (pos != RecyclerView.NO_POSITION) {
-//                        Intent intent = new Intent(ctx, Reservation.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        intent.putExtra("seats", txt_name.getText().toString());
-//                        intent.putExtra("name",name);
-//                        ctx.startActivity(intent);
-//                    }
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        Intent intent = new Intent(ctx, OwnerSetSeat.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("SEATNUM", num.getText().toString());
+                        intent.putExtra("SEATTIME",time.getText().toString());
+                        intent.putExtra("ADDRESS", PCbangAddress);
+                        Toast.makeText(c,time.getText().toString(),Toast.LENGTH_SHORT).show();
+                        ctx.startActivity(intent);
+                    }
+                }
+            });
         }
 
         public void onBind(String numText, String timeTxt) {

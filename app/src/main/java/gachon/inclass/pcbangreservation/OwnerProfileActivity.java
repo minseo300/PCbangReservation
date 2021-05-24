@@ -59,6 +59,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
     DatabaseReference ref;
     //view objects
     private TextView textViewPCbangName;
+    private TextView textViewPCbangAddress;
     private Button buttonLogout;
     private TextView textivewDelete;
     private Button buttonUploadSeatgrid;
@@ -74,6 +75,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
 
         //initializing views
         textViewPCbangName = (TextView) findViewById(R.id.textviewPCbangName);
+        textViewPCbangAddress = (TextView) findViewById(R.id.textviewPCbangAddress);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
         buttonUploadSeatgrid = (Button) findViewById(R.id.buttonUploadSeatgrid);
@@ -106,7 +108,8 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
                     Log.v("names",email);
                     if(email.equals(PCbangEmail)) {
                         textViewPCbangName.setText(snapshot.child("name").getValue().toString());
-                        DatabaseReference ref_seat = ref.child(snapshot.child("address").getValue().toString()); // 보류1: 될지 모르겠음 (reference 안 reference 구조)
+                        textViewPCbangAddress.setText(snapshot.child("address").getValue().toString());
+                        DatabaseReference ref_seat = ref.child(snapshot.child("address").getValue().toString());
                         ref_seat.child("seat").addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -127,7 +130,15 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
                                     String time = snapshot.child("time").getValue().toString();
                                     ListViewItemOwner item = new ListViewItemOwner(number, time);
 
-                                    seatNums.add(item);
+                                    int removedIndex = 0;
+                                    for(int i=0; i<seatNums.size(); i++){
+                                        if(seatNums.get(i).getSeat_num() == number){
+                                            seatNums.remove(i);
+                                            removedIndex = i;
+                                            break;
+                                        }
+                                    }
+                                    seatNums.add(removedIndex, item);
                                 }
                                 adapter.notifyDataSetChanged();
                             }
@@ -154,7 +165,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
                                 adapter.notifyDataSetChanged();
                             }
                         });
-                        adapter = new SeatlistAdapterOwner(getApplicationContext(), seatNums);
+                        adapter = new SeatlistAdapterOwner(getApplicationContext(), seatNums, textViewPCbangAddress.getText().toString());
                         rcView.setAdapter(adapter);
                     }
                 }
@@ -181,7 +192,7 @@ public class OwnerProfileActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        adapter = new SeatlistAdapterOwner(getApplicationContext(), seatNums);
+        adapter = new SeatlistAdapterOwner(getApplicationContext(), seatNums, textViewPCbangAddress.getText().toString());
         rcView.setAdapter(adapter);
 
 
