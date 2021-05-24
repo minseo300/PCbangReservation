@@ -52,6 +52,8 @@ public class ShowReservedSeat  extends Activity {
         SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String strNow = sdfNow.format(date);
 
+        Log.v("test", "Start Show reserved seat by profile activity");
+
         ref = database.getReference("Users").child(DBEmail);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {

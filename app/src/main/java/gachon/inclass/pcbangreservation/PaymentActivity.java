@@ -3,6 +3,7 @@ package gachon.inclass.pcbangreservation;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -41,6 +42,8 @@ public class PaymentActivity extends Activity {
 
         String[] emailID = email.split("\\.");
         String DBEmail = emailID[0]+"_"+emailID[1];
+
+        Log.v("test", "Start payment Activity by Profile activity. read user information from FirebaseUser.getCurrentUser");
 
         ref = database.getReference("Users");
 

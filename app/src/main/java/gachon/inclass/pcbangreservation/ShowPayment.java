@@ -41,6 +41,8 @@ public class ShowPayment  extends Activity {
         String[] emailID = user.getEmail().split("\\.");
         String DBEmail = emailID[0]+"_"+emailID[1];
 
+        Log.v("test","start show payment by profile activity");
+
         ref = database.getReference("Users").child(DBEmail);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {

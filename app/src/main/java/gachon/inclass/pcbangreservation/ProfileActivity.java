@@ -103,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity  implements View.OnClickL
 
         Log.v("names","profile 도착");
 
-
+        Log.v("tests","profile activity start");
 
         //initializing views
         my_location=(TextView)findViewById(R.id.my_location);

@@ -51,6 +51,8 @@ public class ShowSeat  extends AppCompatActivity {
         String name = intent.getStringExtra("PCbangName");
         String address = intent.getStringExtra("address");
 
+        Log.v("test","Get intent from profile Activity: address of PC bang is "+address +", name of PC bang is "+ name);
+
         nameText = (TextView)findViewById(R.id.chosenPCbangName);
         nameText.setText(name);
         imageview = (ImageView)findViewById(R.id.imageView);
