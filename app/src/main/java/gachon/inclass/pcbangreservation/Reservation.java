@@ -50,12 +50,13 @@ public class Reservation extends Activity {
         Intent intent = getIntent();
         String seats = intent.getStringExtra("seats");
         String address = intent.getStringExtra("address");
-        Toast.makeText(getApplicationContext(),address,Toast.LENGTH_SHORT).show();
 
         chosen = (TextView)findViewById(R.id.chosenSeat);
         String[] seatnumber = seats.split(" ");
         String seatNum = seatnumber[2];
         Toast.makeText(getApplicationContext(),seatNum,Toast.LENGTH_SHORT).show();
+
+        Log.v("test","Start reservation activity intent by ShowSeat. Got 2 String. first one is seats number "+ seatNum+", address is " + address);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
